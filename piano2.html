@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center my-5 g-1" id="keys">
+    </div>
+</div>
+
+
+
+<script>
+
+
+    let sounds = ["C4","D4","E4","F4","G4","A4","B4","C5"];
+    let playKeys = ["a","s","d","f","j","k","l",";"];
+    let keys = document.getElementById("keys");
+    let buttons = [];
+    sounds.forEach((sound,index)=>{
+        // console.log(sound,playKeys[index])
+        let button = {
+            sound : sound,
+            playKey : playKeys[index]
+        };
+        buttons.push(button);
+    })
+
+    function getUrl(key){
+        return `sound/${key}.mp3`;
+    }
+
+
+    function createButtonUI(key){
+        let div = document.createElement("div");
+        div.classList.add("col-1");
+        div.innerHTML = `
+             <button class="btn btn-primary w-100" key="${key}" onclick="play('${key}')" style="height: 200px">
+                ${key}
+             </button>
+        `;
+
+        keys.append(div)
+
+    }
+
+    function play(key){
+        let a =new Audio(getUrl(key));
+        a.play();
+        let current = document.querySelector(`[key="${key}"]`);
+        current.classList.add("active")
+        setTimeout(_=>current.classList.remove("active"),200)
+    }
+
+    // console.log(buttons);
+
+    buttons.forEach(button => {
+        // createAudio(sound)
+        createButtonUI(button.sound)
+    })
+
+    document.addEventListener('keyup',e=>{
+        if(current = buttons.find(button=>button.playKey === e.key)){
+            console.log(e.key)
+            console.log(current)
+            play(current.sound)
+        }
+    })
+
+
+
+
+
+
+</script>
+</body>
+</html>
